@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>Shader Playground</title>
+    <style>
+      body {
+        min-height: 100vh;
+        background-color: #16161d;
+        color: #afafb9;
+      }
+      .glslCanvas {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: black;
+        border: solid 2px #afafb9;
+        border-radius: 4px;
+      }
+    </style>
+    <script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script>
+  </head>
+  <body>
+    <h1>Shader Playground</h1>
+    <canvas class="glslCanvas" data-fragment-url="shaders/drawStripesWithSin.glsl" width="256" height="256"></canvas>
+<canvas class="glslCanvas" data-fragment-url="shaders/fillSphere.glsl" width="256" height="256"></canvas>
+<canvas class="glslCanvas" data-fragment-url="shaders/raycast.glsl" width="256" height="256"></canvas>
+  </body>
+</html>

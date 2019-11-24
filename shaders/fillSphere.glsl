@@ -17,10 +17,10 @@ vec4 fillSphere(vec2 center, float radius, vec4 color) {
 }
 
 void main() {
-    vec2 st = gl_FragCoord.xy/u_resolution.xy;
+    vec2 mousePos = u_mouse.xy/u_resolution.xy;
     
     vec4 color = fillSphere(
-        vec2(0.25, 0.25),
+        mousePos + (vec2(sin(u_time), cos(u_time)) * 0.1),
         0.1,
         vec4(1.0, 1.0, 1.0, 1.0)
     );

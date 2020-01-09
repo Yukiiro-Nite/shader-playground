@@ -54,14 +54,21 @@ vec4 drawSpindle(vec2 start, vec2 end, float size, vec4 color) {
 }
 
 vec4 drawSevenSegmentDisplay(float display, vec2 pos, float size, vec4 color) {
-  // need to fix the display calculation
-  float seg_1_display = greaterThan(display / pow(2.0, 6.0), 0.0);
-  float seg_2_display = greaterThan(display / pow(2.0, 5.0), 0.0);
-  float seg_3_display = greaterThan(display / pow(2.0, 4.0), 0.0);
-  float seg_4_display = greaterThan(display / pow(2.0, 3.0), 0.0);
-  float seg_5_display = greaterThan(display / pow(2.0, 2.0), 0.0);
-  float seg_6_display = greaterThan(display / pow(2.0, 1.0), 0.0);
-  float seg_7_display = greaterThan(display / pow(2.0, 0.0), 0.0);
+  float total = 0.0;
+  float seg_1_display = sign(floor(display / 64.0));
+  total = total + (64.0 * seg_1_display);
+  float seg_2_display = sign(floor((display - total) / 32.0));
+  total = total + (32.0 * seg_2_display);
+  float seg_3_display = sign(floor((display - total) / 16.0));
+  total = total + (16.0 * seg_3_display);
+  float seg_4_display = sign(floor((display - total) / 8.0));
+  total = total + (8.0 * seg_4_display);
+  float seg_5_display = sign(floor((display - total) / 4.0));
+  total = total + (4.0 * seg_5_display);
+  float seg_6_display = sign(floor((display - total) / 2.0));
+  total = total + (2.0 * seg_6_display);
+  float seg_7_display = sign(floor((display - total) / 1.0));
+  total = total + (1.0 * seg_7_display);
 
   vec4 seg_1 = drawSpindle(vec2(0.1, 0.3), vec2(0.2, 0.3), 0.01, color) * seg_1_display;
   vec4 seg_2 = drawSpindle(vec2(0.2, 0.3), vec2(0.2, 0.2), 0.01, color) * seg_2_display;
@@ -82,7 +89,25 @@ vec4 drawSevenSegmentDisplay(float display, vec2 pos, float size, vec4 color) {
 }
 
 vec4 drawDigit(float digit, vec2 pos, float size, vec4 color) {
-  return color;
+  digit = floor(digit);
+  float seg_1_display = sign();
+  float seg_2_display = sign(float(digit == 1.0) + 0.0);
+  float seg_3_display = sign(float(digit == 1.0) + 0.0);
+  float seg_4_display = sign();
+  float seg_5_display = sign();
+  float seg_6_display = sign();
+  float seg_7_display = sign();
+
+  float total = 0.0;
+  total = total + (64.0 * seg_1_display);
+  total = total + (32.0 * seg_2_display);
+  total = total + (16.0 * seg_3_display);
+  total = total + (8.0 * seg_4_display);
+  total = total + (4.0 * seg_5_display);
+  total = total + (2.0 * seg_6_display);
+  total = total + (1.0 * seg_7_display);
+
+  return drawSevenSegmentDisplay(total, pos, size, color);
 }
 
 vec4 drawNumber(float num, vec2 pos, float size, vec4 color) {
@@ -91,7 +116,8 @@ vec4 drawNumber(float num, vec2 pos, float size, vec4 color) {
 
 void main() {
   vec4 mainColor = vec4(1.0);
-	vec4 color = drawSevenSegmentDisplay(1., vec2(0.1, 0.9), 0.1, mainColor);
+  vec4 color = drawDigit(1., vec2(0.1, 0.9), 0.1, mainColor);
+	// vec4 color = drawSevenSegmentDisplay(1., vec2(0.1, 0.9), 0.1, mainColor);
 
   gl_FragColor = color;
 }

@@ -69,14 +69,15 @@ vec4 drawSevenSegmentDisplay(float display, vec2 pos, float size, vec4 color) {
   total = total + (2.0 * seg_6_display);
   float seg_7_display = sign(floor((display - total) / 1.0));
   total = total + (1.0 * seg_7_display);
+  float segmentWidth = size / 10.;
 
-  vec4 seg_1 = drawSpindle(vec2(0.1, 0.3), vec2(0.2, 0.3), 0.01, color) * seg_1_display;
-  vec4 seg_2 = drawSpindle(vec2(0.2, 0.3), vec2(0.2, 0.2), 0.01, color) * seg_2_display;
-  vec4 seg_3 = drawSpindle(vec2(0.2, 0.2), vec2(0.2, 0.1), 0.01, color) * seg_3_display;
-  vec4 seg_4 = drawSpindle(vec2(0.2, 0.1), vec2(0.1, 0.1), 0.01, color) * seg_4_display;
-  vec4 seg_5 = drawSpindle(vec2(0.1, 0.1), vec2(0.1, 0.2), 0.01, color) * seg_5_display;
-  vec4 seg_6 = drawSpindle(vec2(0.1, 0.2), vec2(0.1, 0.3), 0.01, color) * seg_6_display;
-  vec4 seg_7 = drawSpindle(vec2(0.1, 0.2), vec2(0.2, 0.2), 0.01, color) * seg_7_display;
+  vec4 seg_1 = drawSpindle(vec2(pos.x, pos.y), vec2(pos.x + size, pos.y), segmentWidth, color) * seg_1_display;
+  vec4 seg_2 = drawSpindle(vec2(pos.x + size, pos.y), vec2(pos.x + size, pos.y - size), segmentWidth, color) * seg_2_display;
+  vec4 seg_3 = drawSpindle(vec2(pos.x + size, pos.y - size), vec2(pos.x + size, pos.y - (size * 2.)), segmentWidth, color) * seg_3_display;
+  vec4 seg_4 = drawSpindle(vec2(pos.x + size, pos.y - (size * 2.)), vec2(pos.x, pos.y - (size * 2.)), segmentWidth, color) * seg_4_display;
+  vec4 seg_5 = drawSpindle(vec2(pos.x, pos.y - (size * 2.)), vec2(pos.x, pos.y - size), segmentWidth, color) * seg_5_display;
+  vec4 seg_6 = drawSpindle(vec2(pos.x, pos.y - size), vec2(pos.x, pos.y), segmentWidth, color) * seg_6_display;
+  vec4 seg_7 = drawSpindle(vec2(pos.x, pos.y - size), vec2(pos.x + size, pos.y - size), segmentWidth, color) * seg_7_display;
   
   color = mix(seg_1, seg_2, seg_2.a);
   color = mix(color, seg_3, seg_3.a);
@@ -90,13 +91,13 @@ vec4 drawSevenSegmentDisplay(float display, vec2 pos, float size, vec4 color) {
 
 vec4 drawDigit(float digit, vec2 pos, float size, vec4 color) {
   digit = floor(digit);
-  float seg_1_display = sign();
-  float seg_2_display = sign(float(digit == 1.0) + 0.0);
-  float seg_3_display = sign(float(digit == 1.0) + 0.0);
-  float seg_4_display = sign();
-  float seg_5_display = sign();
-  float seg_6_display = sign();
-  float seg_7_display = sign();
+  float seg_1_display = sign(float(digit == 0.0) + float(digit == 2.0) + float(digit == 3.0) + float(digit == 5.0) + float(digit == 6.0) + float(digit == 7.0) + float(digit == 8.0) + float(digit == 9.0));
+  float seg_2_display = sign(float(digit == 0.0) + float(digit == 1.0) + float(digit == 2.0) + float(digit == 3.0) + float(digit == 4.0) + float(digit == 7.0) + float(digit == 8.0) + float(digit == 9.0));
+  float seg_3_display = sign(float(digit == 0.0) + float(digit == 1.0) + float(digit == 3.0) + float(digit == 4.0) + float(digit == 5.0) + float(digit == 6.0) + float(digit == 7.0) + float(digit == 8.0) + float(digit == 9.0));
+  float seg_4_display = sign(float(digit == 0.0) + float(digit == 2.0) + float(digit == 3.0) + float(digit == 5.0) + float(digit == 6.0) + float(digit == 8.0) + float(digit == 9.0));
+  float seg_5_display = sign(float(digit == 0.0) + float(digit == 2.0) + float(digit == 6.0) + float(digit == 8.0));
+  float seg_6_display = sign(float(digit == 0.0) + float(digit == 4.0) + float(digit == 5.0) + float(digit == 6.0) + float(digit == 8.0) + float(digit == 9.0));
+  float seg_7_display = sign(float(digit == 2.0) + float(digit == 3.0) + float(digit == 4.0) + float(digit == 5.0) + float(digit == 6.0) + float(digit == 8.0) + float(digit == 9.0));
 
   float total = 0.0;
   total = total + (64.0 * seg_1_display);

@@ -112,12 +112,26 @@ vec4 drawDigit(float digit, vec2 pos, float size, vec4 color) {
 }
 
 vec4 drawNumber(float num, vec2 pos, float size, vec4 color) {
-  return color;
+  float padding = size / 10.0;
+  float total = num;
+  vec4 digits = vec4(0.0);
+    for(float count = 4.0; count > 0.0; count -= 1.0) {
+        float digit = (
+      floor(num/pow(10.0, count - 1.0))*pow(10.0, count - 1.0) -
+      floor(num/pow(10.0, count))*pow(10.0, count)
+    ) / pow(10.0, count-1.0);
+    vec4 digitColor = drawDigit(digit, pos, size, color);
+    digits = mix(digits, digitColor, digitColor.a);
+
+    pos = pos + vec2(size * 1.5, 0);
+    }
+  
+  return digits;
 }
 
 void main() {
   vec4 mainColor = vec4(1.0);
-  vec4 color = drawDigit(1., vec2(0.1, 0.9), 0.1, mainColor);
+  vec4 color = drawNumber(u_time, vec2(0.1, 0.9), 0.05, mainColor);
 	// vec4 color = drawSevenSegmentDisplay(1., vec2(0.1, 0.9), 0.1, mainColor);
 
   gl_FragColor = color;

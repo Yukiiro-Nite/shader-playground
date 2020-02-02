@@ -49,7 +49,7 @@ const getShaderSections = () => {
   const shaderFiles = fs.readdirSync('shaders')
   return shaderFiles
     .filter(shaderFile => shaderFile.endsWith('.glsl'))
-    .map(shaderFile => `<canvas class="glslCanvas" data-fragment-url="shaders/${shaderFile}" data-textures="https://placekitten.com/256/256" width="256" height="256"></canvas>`)
+    .map(shaderFile => `<canvas class="glslCanvas" data-fragment-url="shaders/${shaderFile}" data-textures="https://placekitten.com/512/512" width="256" height="256"></canvas>`)
     .join('\n')
 }
 

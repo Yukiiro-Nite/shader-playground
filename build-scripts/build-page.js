@@ -38,6 +38,7 @@ const buildPage = () =>
       }
     </style>
     <script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script>
+    <script src="shaders/main.js"></script>
   </head>
   <body>
     <h1>Shader Playground</h1>

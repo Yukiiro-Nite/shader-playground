@@ -9,29 +9,46 @@ uniform float u_time;
 const float PI = 3.14159265359;
 const float TAU = PI * 2.0;
 
+float lessThan(float a, float b) {
+  return floor((sign(b - a) + 1.0) / 2.0);
+}
+
+float greaterThan(float a, float b) {
+  return ceil((sign(a - b) + 1.0) / 2.0);
+}
+
+mat2 rotate2d(float _angle){
+    return mat2(cos(_angle),-sin(_angle),
+                sin(_angle),cos(_angle));
+}
+
+float inCone(vec2 from, vec2 to) {
+    vec2 pos = gl_FragCoord.xy/u_resolution.xy;
+    vec2 diff = to - from;
+    float angle = atan(diff.y, diff.x);
+    
+    vec2 offset = pos - from;
+    offset = rotate2d(angle - (PI / 4.0)) * offset;
+    
+    return greaterThan(offset.x, 0.0) * greaterThan(offset.y, 0.0);
+}
+
+vec4 drawLine(vec2 start, vec2 end, float size, vec4 color) {
+  vec2 pos = gl_FragCoord.xy/u_resolution.xy;
+
+  float distanceToLine = abs((end.y - start.y) * pos.x - (end.x - start.x) * pos.y + end.x * start.y - end.y * start.x) / distance(start, end);
+  float inLine = lessThan(distanceToLine, size);
+	float inStartCap = inCone(start, end);
+  float inEndCap = inCone(end, start);
+
+  return color * inLine * inStartCap * inEndCap;
+}
+
 vec4 fillSphere(vec2 center, float radius, vec4 color) {
   vec2 pos = gl_FragCoord.xy/u_resolution.xy;
   float dist = distance(center, pos);
   
   return color * float(dist < radius);
-}
-
-// Need to write a better line drawing function
-vec4 drawLine(vec2 start, vec2 end, float size, vec4 color) {
-    vec2 pos = gl_FragCoord.xy/u_resolution.xy;
-
-  float distanceToLine = abs((end.y - start.y) * pos.x - (end.x - start.x) * pos.y + end.x * start.y - end.y * start.x) / distance(start, end);
-    float inLine = float(distanceToLine < size)
-        * float(pos.x > start.x)
-        * float(pos.y > start.y)
-        * float(pos.x < end.x)
-        * float(pos.y < end.y);
-    vec4 startCap = fillSphere(start, size, color);
-    vec4 endCap = fillSphere(end, size, color);
-    vec4 returnColor = mix(color * inLine, startCap, startCap.a);
-    returnColor = mix(returnColor, endCap, endCap.a);
-    
-    return returnColor;
 }
 
 void main() {

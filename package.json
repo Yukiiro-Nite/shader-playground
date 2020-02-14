@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node build-scripts/build-page.js",
-    "start": "npm run build && npx http-server ./build",
+    "build-old": "node build-scripts/build-page.js",
+    "start-old": "npm run build && npx http-server ./build",
+    "build": "webpack",
+    "start": "npm run build && npx http-server ./dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,5 +19,17 @@
   "bugs": {
     "url": "https://github.com/Yukiiro-Nite/shader-playground/issues"
   },
-  "homepage": "https://github.com/Yukiiro-Nite/shader-playground#readme"
+  "homepage": "https://github.com/Yukiiro-Nite/shader-playground#readme",
+  "devDependencies": {
+    "file-loader": "^5.0.2",
+    "html-loader": "^0.5.5",
+    "raw-loader": "^4.0.0",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-glsl-loader": "^1.0.1"
+  },
+  "dependencies": {
+    "glslCanvas": "^0.1.7",
+    "three": "^0.113.2"
+  }
 }

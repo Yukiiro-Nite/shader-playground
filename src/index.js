@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import shaderTemplate from './shaders/shader-template';
+import shaderTemplate from './shaders/day-14';
 
 let container;
 let camera, scene, renderer;

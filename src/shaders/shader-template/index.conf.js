@@ -6,6 +6,7 @@ import view from './index.html'
 
 const vec2 = new Vector2()
 const config = {
+  name: 'Shader Template',
   vert: vertexShader,
   frag: fragmentShader,
   uniforms: {

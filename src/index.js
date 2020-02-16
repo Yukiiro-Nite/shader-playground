@@ -1,98 +1,37 @@
-import * as THREE from 'three';
-import shaderTemplate from './shaders/day-14';
+import ShaderPage from './components/ShaderPage/ShaderPage';
 
-let container;
-let camera, scene, renderer;
-let uniforms;
+const shaderConfigs = {};
+const requireContext = require.context('./shaders', true, /.conf.js$/)
+requireContext.keys().forEach((key) => {
+  shaderConfigs[key] = requireContext(key).default;
+})
 
-const defaultUniforms = {
-  time: 1.0
-}
+const shaderPage = document.createElement('shader-page');
 
-const defaultUniformUpdates = {
-  time: ({ timestamp }) => timestamp / 1000
-}
+const shaderOptions = Object.entries(shaderConfigs)
+  .map(([key, conf]) => ({ label: conf.name, value: key }));
+const shaderSelect = createSelect(shaderOptions);
+shaderSelect.addEventListener('change', (event) => {
+  shaderPage.shaderConfig = shaderConfigs[event.target.value];
+});
 
-init(shaderTemplate);
-animate();
+const container = document.getElementById('container');
+container.appendChild(shaderSelect);
+container.appendChild(shaderPage);
 
-function resolveUniforms({uniforms, renderer}) {
-  return Object.entries(uniforms)
-    .map(([key, uniform]) => ([
-      key,
-      new THREE.Uniform(
-        uniform instanceof Function
-          ? uniform({ renderer })
-          : uniform
-      )
-    ]))
-    .reduce((acc, [key, uniform]) => {
-      acc[key] = uniform
-      return acc
-    }, {})
-}
-
-function updateUniforms({updates = {}, prevUniforms = {}, renderer, timestamp}) {
-  return Object.entries(updates)
-    .forEach(([key, update]) => {
-        const newVal = update instanceof Function
-          ? update({
-            prev: prevUniforms[key],
-            renderer,
-            timestamp
-          })
-          : update
-        if(prevUniforms[key] === undefined) {
-          prevUniforms[key] = new THREE.Uniform(newVal)
-        } else {
-          prevUniforms[key].value = newVal 
-        }
+function createSelect(options) {
+  const select = document.createElement('select');
+  options.forEach((attrs) => {
+    const optionEl = document.createElement('option');
+    const { label, ...restAttrs } = attrs;
+    optionEl.innerHTML = label;
+    optionEl.label = label;
+    Object.entries(restAttrs).forEach(([key, value]) => {
+      optionEl.setAttribute(key, value);
     })
-}
 
-function init(shaderConfig) {
-  container = document.getElementById( 'container' );
-  camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
-  scene = new THREE.Scene();
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio( window.devicePixelRatio );
-  renderer.setSize(256, 256);
-  var geometry = new THREE.PlaneBufferGeometry( 2, 2 );
-
-  uniforms = resolveUniforms({
-    uniforms: {
-      ...defaultUniforms,
-      ...shaderConfig.uniforms
-    },
-    renderer
+    select.appendChild(optionEl);
   })
 
-  var material = new THREE.ShaderMaterial( {
-    uniforms: uniforms,
-    vertexShader: shaderConfig.vert,
-    fragmentShader: shaderConfig.frag
-  } );
-
-  var mesh = new THREE.Mesh( geometry, material );
-  scene.add( mesh );
-
-  container.appendChild( renderer.domElement );
-}
-
-function animate( timestamp ) {
-
-  requestAnimationFrame( animate );
-
-  updateUniforms({
-    updates: {
-      ...defaultUniformUpdates,
-      ...shaderTemplate.updates
-    },
-    prevUniforms: uniforms,
-    renderer,
-    timestamp
-  })
-
-  renderer.render( scene, camera );
-
+  return select;
 }

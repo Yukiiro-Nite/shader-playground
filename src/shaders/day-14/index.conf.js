@@ -1,13 +1,11 @@
 import { Vector2 } from 'three';
 import fragmentShader from './fragment.glsl'
-import vertexShader from './vertex.glsl'
 import view from './index.html'
 
 
 const vec2 = new Vector2()
 const config = {
   name: 'Day 14',
-  vert: vertexShader,
   frag: fragmentShader,
   uniforms: {
     resolution: ({ renderer }) => renderer.getSize(vec2)
@@ -16,7 +14,7 @@ const config = {
     resolution: ({ renderer }) => renderer.getSize(vec2)
   },
   html: view,
-  containerId: 'container'
+  containerId: 'shader'
 }
 
 export default config

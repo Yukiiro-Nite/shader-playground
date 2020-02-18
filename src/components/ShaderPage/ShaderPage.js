@@ -3,6 +3,7 @@ import defaultVertexShader from './defaultVertexShader.glsl';
 import defaultFragmentShader from './defaultFragmentShader.glsl';
 import defaultView from './defaultView.html';
 
+const vec2 = new THREE.Vector2()
 const defaultUniforms = {
   time: 1.0,
   resolution: ({ renderer }) => renderer.getSize(vec2)

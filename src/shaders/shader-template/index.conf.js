@@ -16,7 +16,7 @@ const config = {
     resolution: ({ renderer }) => renderer.getSize(vec2)
   },
   html: view,
-  containerId: 'container'
+  containerId: 'shader'
 }
 
 export default config

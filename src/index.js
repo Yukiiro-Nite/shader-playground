@@ -21,6 +21,11 @@ container.appendChild(shaderPage);
 
 function createSelect(options) {
   const select = document.createElement('select');
+  const defaultOption = document.createElement('option');
+  defaultOption.selected = true;
+  defaultOption.hidden = true;
+  select.appendChild(defaultOption);
+
   options.forEach((attrs) => {
     const optionEl = document.createElement('option');
     const { label, ...restAttrs } = attrs;

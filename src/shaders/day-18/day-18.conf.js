@@ -13,7 +13,7 @@ const config = {
       const colorEl = document.getElementById('colorEl');
       color = new Color(colorEl.value);
 
-      colorEl.addEventListener('change', (event) => {
+      colorEl.addEventListener('input', (event) => {
         color = new Color(event.target.value);
       })
     }

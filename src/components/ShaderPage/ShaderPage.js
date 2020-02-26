@@ -82,7 +82,7 @@ class ShaderPage extends HTMLElement {
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(256, 256);
+    this.renderer.setSize(512, 512);
     const geometry = new THREE.PlaneBufferGeometry(2, 2);
 
     this.uniforms = resolveUniforms({

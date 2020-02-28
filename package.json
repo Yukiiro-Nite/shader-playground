@@ -29,6 +29,7 @@
     "webpack-glsl-loader": "^1.0.1"
   },
   "dependencies": {
+    "chroma-js": "^2.1.0",
     "glslCanvas": "^0.1.7",
     "three": "^0.113.2"
   }

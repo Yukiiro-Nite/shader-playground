@@ -1,0 +1,42 @@
+<style>
+  form {
+    max-width: 512px;
+    margin: 32px 0;
+  }
+
+  fieldset {
+    padding: 16px;
+    margin: 16px 0;
+  }
+
+  #palette-container {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 16px;
+  }
+
+  .color {
+    min-height: 32px;
+    border-radius: 16px;
+    border: solid 2px var(--light);
+  }
+
+  .color:hover {
+    border: solid 2px pink;
+  }
+</style>
+<h2>Day 27</h2>
+<div id="shader-container"></div>
+<form id="palette-form">
+  <fieldset>
+    <input id="color-input" type="color">
+    <button id="add-color" type="button">Add Color</button>
+  </fieldset>
+  <fieldset id="palette-container">
+    <legend>Color Palette (click color to remove)</legend>
+  </fieldset>
+  <button>Apply Palette</button>
+</form>
+<p>
+  Posterization with a custom palette
+</p>

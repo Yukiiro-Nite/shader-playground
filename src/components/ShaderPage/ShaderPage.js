@@ -14,6 +14,8 @@ const defaultUniformUpdates = {
   resolution: ({ renderer }) => renderer.getSize(vec2)
 }
 
+const defaultGeometry = new THREE.PlaneBufferGeometry(2, 2);
+
 function resolveUniforms({uniforms, renderer}) {
   return Object.entries(uniforms)
     .map(([key, uniform]) => ([
@@ -83,7 +85,7 @@ class ShaderPage extends HTMLElement {
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(512, 512);
-    const geometry = new THREE.PlaneBufferGeometry(2, 2);
+    const geometry = (this.config && this.config.geometry) || defaultGeometry;
 
     this.uniforms = resolveUniforms({
       uniforms: {

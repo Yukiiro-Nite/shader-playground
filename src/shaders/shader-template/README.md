@@ -75,7 +75,7 @@ export default {
 ```
 
 ### **html** [String] (Optional)
-The string value of the html to display when this shader config is selected. Defaults to [`src/components/ShaderPage/defaultView.html`](../../../src/components/ShaderPage/defaultView.html). You can import html at the top of the config file thanks to [html-loader]().
+The string value of the html to display when this shader config is selected. Defaults to [`src/components/ShaderPage/defaultView.html`](../../../src/components/ShaderPage/defaultView.html). You can import html at the top of the config file thanks to [html-loader](https://webpack.js.org/loaders/html-loader/).
 ```js
 import view from './index.html'
 

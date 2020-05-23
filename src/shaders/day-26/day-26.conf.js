@@ -3,7 +3,7 @@ import fragmentShader from './day-26.glsl'
 import view from './day-26.html';
 
 const config = {
-  name: 'Day 26',
+  name: 'Ordered Dither',
   frag: fragmentShader,
   uniforms: {
     texture: () => {

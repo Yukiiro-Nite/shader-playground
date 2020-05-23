@@ -9,7 +9,8 @@ requireContext.keys().forEach((key) => {
 const shaderPage = document.createElement('shader-page');
 
 const shaderOptions = Object.entries(shaderConfigs)
-  .map(([key, conf]) => ({ label: conf.name, value: key }));
+  .map(([key, conf]) => ({ label: conf.name, value: key }))
+  .sort((a, b) => a.label.localeCompare(b.label));
 const shaderSelect = createSelect(shaderOptions);
 shaderSelect.addEventListener('change', (event) => {
   shaderPage.shaderConfig = shaderConfigs[event.target.value];

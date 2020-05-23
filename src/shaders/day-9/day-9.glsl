@@ -72,13 +72,13 @@ vec4 blackWhiteDither(vec4 color) {
   float distanceToWhite = distance(labWhite, labColor);
   float distanceToBlack = distance(labBlack, labColor);
   float totalDistance = distanceToWhite + distanceToBlack;
-  float whitePercent = distanceToWhite / totalDistance;
-  float blackPercent = distanceToBlack / totalDistance;
+  float whitePercent = 1.0 - (distanceToWhite / totalDistance);
+  float blackPercent = 1.0 - (distanceToBlack / totalDistance);
   vec2 pos = gl_FragCoord.xy/resolution.xy;
   float r = random(pos + fract(time));
 
   float isWhite = float(r > 0.0 && r <= whitePercent);
-  float isBlack = float(r > whitePercent && r <= whitePercent + blackPercent);
+  float isBlack = float(r > whitePercent && r <= 1.0);
 
   return (isWhite * white)
        + (isBlack * black);

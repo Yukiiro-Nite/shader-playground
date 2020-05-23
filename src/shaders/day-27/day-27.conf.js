@@ -62,7 +62,7 @@ function addColorEl(container, color) {
 }
 
 const config = {
-  name: 'Day 27',
+  name: 'Custom Posterize',
   frag: fragmentShader,
   uniforms: {
     texture: () => {

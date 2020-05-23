@@ -1,5 +1,14 @@
 <h2>Day 15</h2>
 <div id="shader"></div>
 <p>
-  A Phosphor like effect
+  The original intention was to use the last frame as an input to the next frame.
+  Then I could mix the previous frame with the new frame to create a phosphor effect.
+</p>
+<p>
+  As you can see, it does not work. It turns out that the drawing buffer is not preserved,
+  so I can not get the pixels from the previous frame unless it is preserved.
+  Apparently, preserving the drawing buffer also has negative impacts on performance.
+</p>
+<p>
+  <i>I need to experiment more with this.</i>
 </p>

@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
   mode: 'development',
   entry: './src/index.js',
+  devtool: 'eval-source-map',
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
@@ -20,7 +21,12 @@ module.exports = {
       {
         test: /\.html$/i,
         loader: 'html-loader',
-      }
+      },
+      {
+        test: /\.js$/,
+        enforce: 'pre',
+        use: ['source-map-loader'],
+      },
     ]
   }
 };

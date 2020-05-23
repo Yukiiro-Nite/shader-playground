@@ -1,6 +1,7 @@
 uniform vec2 resolution;
 uniform float time;
-uniform sampler2D  texture;
+uniform sampler2D texture;
+uniform mat3 kernel;
 
 const mat3 outline = mat3(
   vec3(-1.0, -1.0, -1.0),
@@ -67,7 +68,7 @@ vec4 applyKernel(vec2 pos, vec2 ratio, sampler2D tex, mat3 kernel) {
 void main() {
   vec2 pos = gl_FragCoord.xy/resolution.xy;
   vec2 ratio = vec2(1.0) / resolution.xy;
-  vec4 color = applyKernel(pos, ratio, texture, outline);
+  vec4 color = applyKernel(pos, ratio, texture, kernel);
 
   gl_FragColor = color;
 }

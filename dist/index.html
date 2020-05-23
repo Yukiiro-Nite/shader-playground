@@ -10,20 +10,44 @@
         min-height: 100vh;
         background-color: #16161d;
         color: #afafb9;
+        font-family: monospace;
       }
-      .glslCanvas {
-        display: block;
+      canvas {
+        border-radius: 4px;
+        margin-bottom: 16px;
+      }
+      #container {
+        max-width: 512px;
         margin-left: auto;
         margin-right: auto;
-        background-color: black;
-        border: solid 2px #afafb9;
-        border-radius: 4px;
+      }
+      label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      input {
+        margin-left: 8px;
+      }
+      form {
+        margin-bottom: 16px;
+      }
+      .main-header {
+        text-decoration: underline;
+      }
+
+      .matrix-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 16px;
       }
     </style>
   </head>
   <body>
-    <h1>Shader Playground</h1>
-    <div id="container"></div>
+    <div id="container">
+      <h1 class="main-header">Shader Playground</h1>
+    </div>
     <script src="main.js"></script>
   </body>
 </html>

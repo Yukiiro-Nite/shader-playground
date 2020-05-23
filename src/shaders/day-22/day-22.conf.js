@@ -4,7 +4,7 @@ import view from './day-22.html';
 
 const defaultTexture = new TextureLoader().load('https://placekitten.com/512/512');
 const config = {
-  name: 'Day 22',
+  name: 'RGB Desync',
   frag: fragmentShader,
   uniforms: {
     texture: defaultTexture

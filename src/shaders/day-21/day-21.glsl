@@ -2,6 +2,8 @@ uniform vec2 resolution;
 uniform float time;
 uniform float inputWidth;
 uniform float inputHeight;
+uniform float isPolar;
+uniform float isDistance;
 const float PI = 3.14159265359;
 const float TAU = PI * 2.0;
 const float EPSILON = 0.0000001;
@@ -25,10 +27,10 @@ float isGridPoint(vec2 pos, float width, float height) {
 
 void main() {
   vec2 pos = gl_FragCoord.xy/resolution.xy;
-  pos = polarSpace(pos, vec2(0.5));
+  pos = ((1.0 - isPolar) * pos) + ( isPolar * polarSpace(pos, vec2(0.5)));
   float isPoint = isGridPoint(pos, inputWidth, inputHeight);
   float gridDist = gridDistance(pos, inputWidth, inputHeight);
   vec4 color = vec4(1.0);
 
-  gl_FragColor = color * gridDist;
+  gl_FragColor = ((1.0 - isDistance) * color * isPoint) + (isDistance * color * gridDist);
 }

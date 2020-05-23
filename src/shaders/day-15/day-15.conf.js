@@ -24,7 +24,7 @@ const getSelf = ({ renderer }) => {
 };
 
 const config = {
-  name: 'Day 15',
+  name: 'Phosphor',
   frag: fragmentShader,
   uniforms: {
     prevTexture: getSelf

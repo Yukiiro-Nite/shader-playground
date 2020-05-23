@@ -47,9 +47,24 @@ vec4 fillSphere(vec2 center, float radius, vec4 color) {
 
 void main() {
     vec2 st = gl_FragCoord.xy/resolution.xy;
-    float minuteRadians = (time * -TAU / 60.0) + PI / 2.0;
-    vec2 timeTransform = vec2(cos(minuteRadians), sin(minuteRadians)) * 0.25;
-    vec4 color = drawLine(vec2(0.5, 0.5), vec2(0.5, 0.5) + timeTransform, 0.01, vec4(1.0));
+
+    float secondsInClock = 60.0;
+    float secondRadians = (time * -TAU / secondsInClock) + PI / 2.0;
+    vec2 secondTransform = vec2(cos(secondRadians), sin(secondRadians)) * 0.25;
+    vec4 secondHand = drawLine(vec2(0.5, 0.5), vec2(0.5, 0.5) + secondTransform, 0.005, vec4(1.0, 0.0, 0.0, 1.0));
+
+    float minutesInClock = secondsInClock * 60.0;
+    float minuteRadians = (time * -TAU / minutesInClock) + PI / 2.0;
+    vec2 minuteTransform = vec2(cos(minuteRadians), sin(minuteRadians)) * 0.3;
+    vec4 minuteHand = drawLine(vec2(0.5, 0.5), vec2(0.5, 0.5) + minuteTransform, 0.01, vec4(0.8, 0.8, 0.8, 1.0));
+
+    float hoursInClock = minutesInClock * 12.0;
+    float hourRadians = (time * -TAU / hoursInClock) + PI / 2.0;
+    vec2 hourTransform = vec2(cos(hourRadians), sin(hourRadians)) * 0.2;
+    vec4 hourHand = drawLine(vec2(0.5, 0.5), vec2(0.5, 0.5) + hourTransform, 0.02, vec4(1.0));
+
+    vec4 color = mix(secondHand, minuteHand, minuteHand.a);
+    color = mix(color, hourHand, hourHand.a);
 
     gl_FragColor = color;
 }

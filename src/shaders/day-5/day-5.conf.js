@@ -2,7 +2,7 @@ import fragmentShader from './day-5.glsl'
 import view from './day-5.html';
 
 const config = {
-  name: 'Day 5',
+  name: 'Analog Timer',
   frag: fragmentShader,
   html: view
 }

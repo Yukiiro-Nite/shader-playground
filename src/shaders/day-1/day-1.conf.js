@@ -1,7 +1,7 @@
 import fragmentShader from './day-1.glsl'
 
 const config = {
-  name: 'Day 1',
+  name: 'Moving Circles',
   frag: fragmentShader
 }
 

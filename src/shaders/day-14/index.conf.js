@@ -5,7 +5,7 @@ import view from './index.html'
 
 const vec2 = new Vector2()
 const config = {
-  name: 'Day 14',
+  name: 'Sonic Ball',
   frag: fragmentShader,
   uniforms: {
     resolution: ({ renderer }) => renderer.getSize(vec2)

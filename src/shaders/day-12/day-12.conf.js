@@ -4,7 +4,7 @@ import view from './day-12.html';
 
 const defaultTexture = new TextureLoader().load('https://placekitten.com/512/512');
 const config = {
-  name: 'Day 12',
+  name: 'Bouncing Ball',
   frag: fragmentShader,
   uniforms: {
     texture: defaultTexture

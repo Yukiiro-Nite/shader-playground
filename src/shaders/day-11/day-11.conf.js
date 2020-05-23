@@ -4,7 +4,7 @@ import view from './day-11.html';
 
 const defaultTexture = new TextureLoader().load('https://placekitten.com/512/512');
 const config = {
-  name: 'Day 11',
+  name: 'Hue Shift',
   frag: fragmentShader,
   uniforms: {
     texture: defaultTexture

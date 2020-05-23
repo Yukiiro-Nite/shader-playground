@@ -4,7 +4,7 @@ import view from './day-2.html';
 
 const defaultTexture = new TextureLoader().load('https://placekitten.com/512/512');
 const config = {
-  name: 'Day 2',
+  name: 'Rainbow Cat',
   frag: fragmentShader,
   uniforms: {
     texture: defaultTexture

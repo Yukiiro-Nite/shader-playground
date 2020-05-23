@@ -6,7 +6,7 @@ const defaultTexture = new TextureLoader().load('https://placekitten.com/512/512
 let position = new Vector2(0.5, 0.5);
 let direction = 0;
 const config = {
-  name: 'Day 19',
+  name: 'Reflection',
   frag: fragmentShader,
   uniforms: {
     texture: defaultTexture,

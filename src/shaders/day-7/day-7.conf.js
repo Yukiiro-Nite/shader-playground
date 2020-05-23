@@ -4,7 +4,7 @@ import view from './day-7.html';
 
 const defaultTexture = new TextureLoader().load('https://placekitten.com/512/512');
 const config = {
-  name: 'Day 7',
+  name: 'Polar Coordinates',
   frag: fragmentShader,
   uniforms: {
     texture: defaultTexture

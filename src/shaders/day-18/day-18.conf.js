@@ -2,10 +2,10 @@ import { TextureLoader, Color } from 'three';
 import fragmentShader from './day-18.glsl'
 import view from './day-18.html';
 
-const defaultTexture = new TextureLoader().load('https://placekitten.com/256/256');
+const defaultTexture = new TextureLoader().load('https://placekitten.com/512/512');
 let color = new Color();
 const config = {
-  name: 'Day 18',
+  name: 'Colorize',
   frag: fragmentShader,
   uniforms: {
     texture: defaultTexture,

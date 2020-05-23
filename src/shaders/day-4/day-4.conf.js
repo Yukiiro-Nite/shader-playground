@@ -4,7 +4,7 @@ import view from './day-4.html';
 
 const defaultTexture = new TextureLoader().load('https://placekitten.com/512/512');
 const config = {
-  name: 'Day 4',
+  name: 'Ripple Effect',
   frag: fragmentShader,
   uniforms: {
     texture: defaultTexture

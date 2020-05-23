@@ -2,7 +2,7 @@ import fragmentShader from './day-24.glsl'
 import view from './day-24.html';
 
 const config = {
-  name: 'Day 24',
+  name: 'Chunky Rain',
   frag: fragmentShader,
   html: view
 }

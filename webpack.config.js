@@ -28,5 +28,8 @@ module.exports = {
         use: ['source-map-loader'],
       },
     ]
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'dist')
   }
 };

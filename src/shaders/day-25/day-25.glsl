@@ -29,17 +29,17 @@ vec4 applyKernel(vec2 pos, vec2 ratio, sampler2D tex, mat3 kernel) {
   mat3 lumSample = mat3(
     vec3(
       getGray(tex, pos + vec2(-1.0, 1.0) * ratio),
-      getGray(tex, pos + vec2(0.0, 1.0) * ratio),
-      getGray(tex, pos + vec2(1.0, 1.0) * ratio)
-    ),
-    vec3(
       getGray(tex, pos + vec2(-1.0, 0.0) * ratio),
-      getGray(tex, pos + vec2(0.0, 0.0) * ratio),
-      getGray(tex, pos + vec2(1.0, 0.0) * ratio)
+      getGray(tex, pos + vec2(-1.0, -1.0) * ratio)
     ),
     vec3(
-      getGray(tex, pos + vec2(-1.0, -1.0) * ratio),
-      getGray(tex, pos + vec2(0.0, -1.0) * ratio),
+      getGray(tex, pos + vec2(0.0, 1.0) * ratio),
+      getGray(tex, pos + vec2(0.0, 0.0) * ratio),
+      getGray(tex, pos + vec2(0.0, -1.0) * ratio)
+    ),
+    vec3(
+      getGray(tex, pos + vec2(1.0, 1.0) * ratio),
+      getGray(tex, pos + vec2(1.0, 0.0) * ratio),
       getGray(tex, pos + vec2(1.0, -1.0) * ratio)
     )
   );

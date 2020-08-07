@@ -5,6 +5,8 @@
       :root {
         --light: #afafb9;
         --dark: #16161d;
+        --sky: #00b8ff;
+        --violet: #d600ff;
       }
       body {
         min-height: 100vh;
@@ -41,6 +43,14 @@
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
         gap: 16px;
+      }
+
+      a {
+        color: var(--sky);
+      }
+
+      a:visited {
+        color: var(--violet);
       }
     </style>
   </head>

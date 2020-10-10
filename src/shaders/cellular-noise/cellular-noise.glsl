@@ -1,5 +1,6 @@
 uniform vec2 resolution;
 uniform float time;
+#define PI 3.14159265359
 
 // Cellular noise ("Worley noise") in 3D in GLSL.
 // Copyright (c) Stefan Gustavson 2011-04-19. All rights reserved.
@@ -191,11 +192,11 @@ vec2 cellular(vec3 P) {
 
 void main() {
   vec2 pos = (gl_FragCoord.xy/resolution.xy) * 8.0;
-  float noise = cellular(vec3(pos.x, time / 2.0, pos.y)).x;
-  vec4 gradient = vec4(1.0) * noise;
-  vec4 threshold = vec4(1.0) * float(noise > 0.5);
+	vec2 cellularNoise = cellular(vec3(pos.x, time / 2.0, pos.y));
+  vec4 topGradient = vec4(1.0) * (1.0 - cellularNoise.x);
+  vec4 bottomGradient = vec4(1.0) * cellularNoise.y;
   float topHalf = float(gl_FragCoord.y > resolution.y / 2.0);
   float bottomHalf = 1.0 - topHalf;
   
-  gl_FragColor = topHalf * gradient + bottomHalf * threshold;
+  gl_FragColor = topHalf * topGradient + bottomHalf * bottomGradient;
 }

@@ -31,7 +31,7 @@ vec3 permute(vec3 x) {
 // modern GPU. In any case, it beats any software
 // implementation of Worley noise hands down.
 
-vec2 cellular(vec3 P) {
+vec4 cellular(vec3 P) {
 #define K 0.142857142857 // 1/7
 #define Ko 0.428571428571 // 1/2-K/2
 #define K2 0.020408163265306 // 1/(7*7)
@@ -164,6 +164,7 @@ vec2 cellular(vec3 P) {
 	vec3 da = min(d11, d21);
 	d21 = max(d11, d21);
 	d11 = min(da, d31); // Smallest now in d11
+	vec3 closest = d11;
 	d31 = max(da, d31); // 2nd smallest now not in d31
 	d11.xy = (d11.x < d11.y) ? d11.xy : d11.yx;
 	d11.xz = (d11.x < d11.z) ? d11.xz : d11.zx; // d11.x now smallest
@@ -171,29 +172,56 @@ vec2 cellular(vec3 P) {
 	d12 = min(d12, d22); // nor in d22
 	d12 = min(d12, d31); // nor in d31
 	d12 = min(d12, d32); // nor in d32
+	vec3 closest2 = d12;
 	d11.yz = min(d11.yz,d12.xy); // nor in d12.yz
 	d11.y = min(d11.y,d12.z); // Only two more to go
 	d11.y = min(d11.y,d11.z); // Done! (Phew!)
-	return sqrt(d11.xy); // F1, F2
+	// return sqrt(d11.xy); // F1, F2
+	return vec4(sqrt(closest), d11.y - d11.x);
 }
 
 // Past here is my code
 
 void main() {
+  vec3 ratio = vec3(1.0 / resolution.x, 0.0, 1.0 / resolution.y);
   vec2 pos = (gl_FragCoord.xy/resolution.xy) * 8.0;
-	vec2 cellularNoise = cellular(vec3(pos.x, time / 4.0, pos.y));
-  vec4 cellGradient = vec4(1.0) * cellularNoise.x;
-  vec4 voroniGradient = vec4(1.0) * cellularNoise.y;
-  float topHalf = float(gl_FragCoord.y > resolution.y / 2.0);
-  float bottomHalf = 1.0 - topHalf;
-  
-	// Show F1 on top and F2 on bottom
-  gl_FragColor = topHalf * cellGradient + bottomHalf * voroniGradient;
+  vec3 p = vec3(pos.x, time / 4.0, pos.y);
+	vec4 cellularNoise = cellular(p);
 
-	// This highlights the edges of the cells
-	// gl_FragColor = (voroniGradient.x - cellGradient.x) > 0.1 ? vec4(0.0) : vec4(1.0);
+  vec3 tlv = p + vec3(-1.0, 0.0, 1.0) * ratio;
+  vec3 tv = p + vec3(0.0, 0.0, 1.0) * ratio;
+  vec3 trv = p + vec3(1.0, 0.0, 1.0) * ratio;
+  vec3 lv = p + vec3(-1.0, 0.0, 0.0) * ratio;
+  vec3 rv = p + vec3(1.0, 0.0, 0.0) * ratio;
+  vec3 blv = p + vec3(-1.0, 0.0, -1.0) * ratio;
+  vec3 bv = p + vec3(0.0, 0.0, -1.0) * ratio;
+  vec3 brv = p + vec3(1.0, 0.0, -1.0) * ratio;
 
-	// Animate between F1 and F2
-	// float phase = (sin(time * 2.0) + 1.0) / 2.0;
-	// gl_FragColor = mix(cellGradient, voroniGradient, phase);
-}
+  float tl = cellular(tlv).w;
+  float t = cellular(tv).w;
+  float tr = cellular(trv).w;
+  float l = cellular(lv).w;
+  float r = cellular(rv).w;
+  float bl = cellular(blv).w;
+  float b = cellular(bv).w;
+  float br = cellular(brv).w;
+
+  float dx = tl + l*2.0 + bl - tr - r*2.0 - br;
+  float dy = tl + t*2.0 + tr - bl - b*2.0 - br;
+
+  vec4 normal = vec4(normalize(vec3(dx, dy, 0.05)), cellularNoise.w);
+
+	vec4 color = mix(
+    vec4(0.0),
+    vec4(1.0),
+    cellularNoise.w
+  );
+
+  // color = mix(
+  //   color,
+  //   vec4(1.0, 0.0, 0.0, 1.0),
+  //   1.0 - step(1.0, distance(vec2(pos.x, pos.y), cellularNoise.xz))
+  // );
+
+  gl_FragColor = vec4(normal.xy * 0.5 + 0.5, normal.zw);
+} 

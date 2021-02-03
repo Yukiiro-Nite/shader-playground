@@ -34,6 +34,7 @@ mat3 rotate3d(vec3 r) {
 }
 
 // https://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm
+// sdf shapes
 float sphere(vec3 pos, float radius) {
   return length(pos) - radius;
 }
@@ -52,6 +53,19 @@ float torus(vec3 pos, vec2 thickness) {
   return length(q) - thickness.y;
 }
 
+// sdf combinations
+float union(float d1, float d2) {
+  return min(d1, d2);
+}
+
+float subtract(float d1, float d2) {
+  return max(-d1, d2);
+}
+
+float intersect(float d1, float d2) {
+  return max(d1, d2);
+}
+
 // https://timcoster.com/2020/02/11/raymarching-shader-pt1-glsl/
 float GetDist(vec3 p)
 {
@@ -59,9 +73,9 @@ float GetDist(vec3 p)
     float planeDist = plane(p, vec3(0.0, 1.0, 0.0), 0.0);
     float boxDist = box((p - vec3(-2.0, 1.0, 8.0)) * rotate3d(vec3(0.0, time, 0.0)), vec3(0.5, 0.5, 0.25));
     float ringDist = torus((p - vec3(2.0, 1.0, 8.0)) * rotate3d(vec3(PI / 2.0, 0.0, -time)), vec2(0.5, 0.25));
-    float d = min(sphereDist, planeDist);
-    d = min(d, boxDist);
-    d = min(d, ringDist);
+    float d = union(planeDist, sphereDist);
+    d = union(d, boxDist);
+    d = union(d, ringDist);
  
     return d;
 }

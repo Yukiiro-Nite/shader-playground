@@ -33,6 +33,10 @@ mat3 rotate3d(vec3 r) {
   );
 }
 
+float cross(vec2 a, vec2 b) {
+  return a.x * b.y - a.y * b.x;
+}
+
 // https://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm
 // sdf shapes
 float sphere(vec3 pos, float radius) {
@@ -53,44 +57,77 @@ float torus(vec3 pos, vec2 thickness) {
   return length(q) - thickness.y;
 }
 
+float cone(vec3 pos, vec2 angle, float height) {
+  vec2 q = height * vec2(angle.x / angle.y, -1.0);
+
+  vec2 w = vec2(length(pos.xz), pos.y);
+  vec2 a = w - q * clamp(dot(w, q) / dot(q, q), 0.0, 1.0);
+  vec2 b = w - q * vec2(clamp(w.x / q.x, 0.0, 1.0), 1.0);
+  float k = sign(q.y);
+  float d = min(dot(a, a), dot(b, b));
+  float s = max(k * cross(w, q), k * (w.y - q.y));
+
+  return sqrt(d) * sign(s);
+}
+
+// vec3 pa = p - a, ba = b - a;
+//   float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
+//   return length( pa - ba*h ) - r;
+
+float capsule(vec3 pos, vec3 start, vec3 end, float radius) {
+  vec3 posToStart = pos - start;
+  vec3 startToEnd = end - start;
+
+  float h = clamp(dot(posToStart, startToEnd) / dot(startToEnd, startToEnd), 0.0, 1.0);
+
+  return length(posToStart - startToEnd * h) - radius;
+}
+
 // sdf combinations
-float union(float d1, float d2) {
+float opUnion(float d1, float d2) {
   return min(d1, d2);
 }
 
-float subtract(float d1, float d2) {
+float opSubtract(float d1, float d2) {
   return max(-d1, d2);
 }
 
-float intersect(float d1, float d2) {
+float opIntersect(float d1, float d2) {
   return max(d1, d2);
 }
 
 // https://timcoster.com/2020/02/11/raymarching-shader-pt1-glsl/
 float GetDist(vec3 p)
 {
-    float sphereDist = sphere(p - vec3(0.0, 1.0, 8.0), 1.0);
-    float planeDist = plane(p, vec3(0.0, 1.0, 0.0), 0.0);
-    float boxDist = box((p - vec3(-2.0, 1.0, 8.0)) * rotate3d(vec3(0.0, time, 0.0)), vec3(0.5, 0.5, 0.25));
-    float ringDist = torus((p - vec3(2.0, 1.0, 8.0)) * rotate3d(vec3(PI / 2.0, 0.0, -time)), vec2(0.5, 0.25));
-    float d = union(planeDist, sphereDist);
-    d = union(d, boxDist);
-    d = union(d, ringDist);
- 
-    return d;
+  // define all of the shapes
+  float sphereDist = sphere(p - vec3(0.0, 1.0, 8.0), 1.0);
+  float planeDist = plane(p, vec3(0.0, 1.0, 0.0), 0.0);
+  float boxDist = box((p - vec3(-2.0, 1.0, 8.0)) * rotate3d(vec3(0.0, time, 0.0)), vec3(0.5, 0.5, 0.25));
+  float ringDist = torus((p - vec3(2.0, 1.0, 8.0)) * rotate3d(vec3(PI / 2.0, 0.0, -time)), vec2(0.5, 0.25));
+  float coneDist = cone((p - vec3(0.0, 4.0, 8.0)), vec2(sin(PI / 8.0), cos(PI / 8.0)), 1.0);
+  float capsuleDist = capsule(p, vec3(-3.0, 2.5, 8.0), vec3(3.0, 2.5, 8.0), 0.25);
+
+  // put all of the shapes together
+  float d = opUnion(planeDist, sphereDist);
+  d = opUnion(d, boxDist);
+  d = opUnion(d, ringDist);
+  d = opUnion(d, coneDist);
+  d = opUnion(d, capsuleDist);
+
+  return d;
 }
  
 float RayMarch(vec3 ro, vec3 rd) 
 {
-    float dO = 0.; //Distane Origin
-    for(int i=0;i<MAX_STEPS;i++)
-    {
-        vec3 p = ro + rd * dO;
-        float ds = GetDist(p); // ds is Distance Scene
-        dO += ds;
-        if(dO > MAX_DIST || ds < SURFACE_DIST) break;
-    }
-    return dO;
+  float dO = 0.; // Distance Origin
+  for(int i=0; i<MAX_STEPS; i++)
+  {
+    vec3 p = ro + rd * dO;
+    float ds = GetDist(p); // ds is Distance Scene
+    dO += ds;
+    if(dO > MAX_DIST || ds < SURFACE_DIST) break;
+  }
+  return dO;
 }
  
 void main()
@@ -99,7 +136,7 @@ void main()
     vec3 ro = vec3(0,1,0); // Ray Origin/ Camera
     vec3 rd = normalize(vec3(uv.x,uv.y,1));
     float d = RayMarch(ro,rd); // Distance
-    d/= 10.;
+    d /= 10.;
     vec3 color = vec3(d);
      
     // Set the output color

@@ -70,10 +70,6 @@ float cone(vec3 pos, vec2 angle, float height) {
   return sqrt(d) * sign(s);
 }
 
-// vec3 pa = p - a, ba = b - a;
-//   float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
-//   return length( pa - ba*h ) - r;
-
 float capsule(vec3 pos, vec3 start, vec3 end, float radius) {
   vec3 posToStart = pos - start;
   vec3 startToEnd = end - start;

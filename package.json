@@ -37,6 +37,6 @@
   "dependencies": {
     "chroma-js": "^2.1.0",
     "glslCanvas": "^0.1.7",
-    "three": "^0.113.2"
+    "three": "^0.125.0"
   }
 }
